@@ -1,5 +1,4 @@
-import db from '../config/database.js';
-import sql from 'mssql/msnodesqlv8.js';
+import supabase from '../config/database.js';
 
 const ThongBao = {
   /**
@@ -7,9 +6,13 @@ const ThongBao = {
    */
   async findAll() {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request().query('SELECT *, thong_bao_id AS id FROM ThongBao ORDER BY ngay_dang DESC');
-      return result.recordset;
+      const { data, error } = await supabase
+        .from('ThongBao')
+        .select('*, id:thong_bao_id')
+        .order('ngay_dang', { ascending: false });
+
+      if (error) throw error;
+      return data;
     } catch (err) {
       throw err;
     }
@@ -20,24 +23,18 @@ const ThongBao = {
    */
   async create({ tieu_de, noi_dung, loai }) {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request()
-        .input('tieu_de', sql.NVarChar, tieu_de)
-        .input('noi_dung', sql.NVarChar, noi_dung)
-        .input('loai', sql.VarChar, loai)
-        .query(`
-          INSERT INTO ThongBao (tieu_de, noi_dung, ngay_dang, loai)
-          OUTPUT INSERTED.thong_bao_id AS id, INSERTED.thong_bao_id, INSERTED.ngay_dang
-          VALUES (@tieu_de, @noi_dung, GETDATE(), @loai)
-        `);
-      return {
-        id: result.recordset[0].id,
-        thong_bao_id: result.recordset[0].thong_bao_id,
-        tieu_de, 
-        noi_dung, 
-        loai,
-        ngay_dang: result.recordset[0].ngay_dang
-      };
+      const { data, error } = await supabase
+        .from('ThongBao')
+        .insert([{
+          tieu_de,
+          noi_dung,
+          loai,
+          ngay_dang: new Date().toISOString()
+        }])
+        .select('*, id:thong_bao_id');
+
+      if (error) throw error;
+      return data[0];
     } catch (err) {
       throw err;
     }
@@ -48,32 +45,30 @@ const ThongBao = {
    */
   async deleteById(id) {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request()
-        .input('id', sql.Int, id)
-        .query('DELETE FROM ThongBao WHERE thong_bao_id = @id');
-      return { success: true, changes: result.rowsAffected[0], id, thong_bao_id: id };
+      const { error } = await supabase
+        .from('ThongBao')
+        .delete()
+        .eq('thong_bao_id', id);
+
+      if (error) throw error;
+      return { success: true, changes: 1, id, thong_bao_id: id };
     } catch (err) {
       throw err;
     }
   },
+
   /**
    * Cập nhật thông báo theo ID
    */
   async updateById(id, { tieu_de, noi_dung, loai }) {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request()
-        .input('id', sql.Int, id)
-        .input('tieu_de', sql.NVarChar, tieu_de)
-        .input('noi_dung', sql.NVarChar, noi_dung)
-        .input('loai', sql.VarChar, loai)
-        .query(`
-          UPDATE ThongBao
-          SET tieu_de = @tieu_de, noi_dung = @noi_dung, loai = @loai
-          WHERE thong_bao_id = @id
-        `);
-      return { success: true, changes: result.rowsAffected[0] };
+      const { error } = await supabase
+        .from('ThongBao')
+        .update({ tieu_de, noi_dung, loai })
+        .eq('thong_bao_id', id);
+
+      if (error) throw error;
+      return { success: true, changes: 1 };
     } catch (err) {
       throw err;
     }

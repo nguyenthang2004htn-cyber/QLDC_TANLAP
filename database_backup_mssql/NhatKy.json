@@ -1,0 +1,306 @@
+[
+  {
+    "nhat_ky_id": 1,
+    "ngay_gio": "2026-08-27T09:24:56.517Z",
+    "hanh_dong": "Táº¡o pháº£n Ă¡nh má»›i",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 1,
+    "tham_chieu": "dnvkjbvbkbkabv"
+  },
+  {
+    "nhat_ky_id": 2,
+    "ngay_gio": "2026-08-27T09:28:11.300Z",
+    "hanh_dong": "Táº¡o pháº£n Ă¡nh má»›i",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 2,
+    "tham_chieu": "vhfwbfn"
+  },
+  {
+    "nhat_ky_id": 3,
+    "ngay_gio": "2026-08-27T09:28:29.250Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 2,
+    "tham_chieu": "vhfwbfn"
+  },
+  {
+    "nhat_ky_id": 4,
+    "ngay_gio": "2026-08-28T20:26:05.980Z",
+    "hanh_dong": "Táº¡o pháº£n Ă¡nh má»›i",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 3,
+    "tham_chieu": "tai nạn"
+  },
+  {
+    "nhat_ky_id": 5,
+    "ngay_gio": "2026-08-28T20:28:00.267Z",
+    "hanh_dong": "Táº¡o pháº£n Ă¡nh má»›i",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 4,
+    "tham_chieu": "cbbkv"
+  },
+  {
+    "nhat_ky_id": 6,
+    "ngay_gio": "2026-08-28T20:28:28.910Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 4,
+    "tham_chieu": "cbbkv"
+  },
+  {
+    "nhat_ky_id": 7,
+    "ngay_gio": "2026-08-28T20:28:44.410Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 4,
+    "tham_chieu": "cbbkv"
+  },
+  {
+    "nhat_ky_id": 8,
+    "ngay_gio": "2026-08-28T20:29:18.273Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 4,
+    "tham_chieu": "cbbkv"
+  },
+  {
+    "nhat_ky_id": 9,
+    "ngay_gio": "2026-08-28T20:35:21.210Z",
+    "hanh_dong": "Táº¡o pháº£n Ă¡nh má»›i",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 5,
+    "tham_chieu": "bjhvbcd"
+  },
+  {
+    "nhat_ky_id": 10,
+    "ngay_gio": "2026-08-28T20:36:10.213Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 5,
+    "tham_chieu": "bjhvbcd"
+  },
+  {
+    "nhat_ky_id": 11,
+    "ngay_gio": "2026-08-28T20:36:11.797Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 5,
+    "tham_chieu": "bjhvbcd"
+  },
+  {
+    "nhat_ky_id": 12,
+    "ngay_gio": "2026-08-28T20:36:20.107Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 5,
+    "tham_chieu": "bjhvbcd"
+  },
+  {
+    "nhat_ky_id": 13,
+    "ngay_gio": "2026-08-28T20:58:54.110Z",
+    "hanh_dong": "Táº¡o pháº£n Ă¡nh má»›i",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 6,
+    "tham_chieu": "bgbb"
+  },
+  {
+    "nhat_ky_id": 14,
+    "ngay_gio": "2026-08-28T20:59:30.873Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 6,
+    "tham_chieu": "bgbb"
+  },
+  {
+    "nhat_ky_id": 15,
+    "ngay_gio": "2026-08-28T20:59:51.133Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 2,
+    "tham_chieu": "vhfwbfn"
+  },
+  {
+    "nhat_ky_id": 16,
+    "ngay_gio": "2026-08-28T21:00:20.743Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 6,
+    "tham_chieu": "bgbb"
+  },
+  {
+    "nhat_ky_id": 17,
+    "ngay_gio": "2026-08-28T22:59:03.103Z",
+    "hanh_dong": "Táº¡o pháº£n Ă¡nh má»›i",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 7,
+    "tham_chieu": "njvab"
+  },
+  {
+    "nhat_ky_id": 18,
+    "ngay_gio": "2026-08-28T22:59:36.923Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 7,
+    "tham_chieu": "njvab"
+  },
+  {
+    "nhat_ky_id": 19,
+    "ngay_gio": "2026-08-28T23:11:02.873Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 7,
+    "tham_chieu": "njvab"
+  },
+  {
+    "nhat_ky_id": 20,
+    "ngay_gio": "2026-08-28T23:11:39.030Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 6,
+    "tham_chieu": "bgbb"
+  },
+  {
+    "nhat_ky_id": 21,
+    "ngay_gio": "2026-08-28T23:12:08.797Z",
+    "hanh_dong": "Táº¡o pháº£n Ă¡nh má»›i",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 8,
+    "tham_chieu": "dhbfd"
+  },
+  {
+    "nhat_ky_id": 22,
+    "ngay_gio": "2026-08-28T23:12:17.773Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 8,
+    "tham_chieu": "dhbfd"
+  },
+  {
+    "nhat_ky_id": 23,
+    "ngay_gio": "2026-08-28T23:12:19.743Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 8,
+    "tham_chieu": "dhbfd"
+  },
+  {
+    "nhat_ky_id": 24,
+    "ngay_gio": "2026-08-28T23:19:36.390Z",
+    "hanh_dong": "Táº¡o pháº£n Ă¡nh má»›i",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 9,
+    "tham_chieu": "hvfdhjb"
+  },
+  {
+    "nhat_ky_id": 25,
+    "ngay_gio": "2026-08-28T23:19:48.550Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 9,
+    "tham_chieu": "hvfdhjb"
+  },
+  {
+    "nhat_ky_id": 26,
+    "ngay_gio": "2026-08-28T23:24:48.483Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 8,
+    "tham_chieu": "dhbfd"
+  },
+  {
+    "nhat_ky_id": 27,
+    "ngay_gio": "2026-08-28T23:25:43.773Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 9,
+    "tham_chieu": "hvfdhjb"
+  },
+  {
+    "nhat_ky_id": 28,
+    "ngay_gio": "2026-08-28T23:26:04.093Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 9,
+    "tham_chieu": "hvfdhjb"
+  },
+  {
+    "nhat_ky_id": 29,
+    "ngay_gio": "2026-08-28T23:26:37.343Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 9,
+    "tham_chieu": "hvfdhjb"
+  },
+  {
+    "nhat_ky_id": 30,
+    "ngay_gio": "2026-08-28T23:53:55.137Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 8,
+    "tham_chieu": "dhbfd"
+  },
+  {
+    "nhat_ky_id": 31,
+    "ngay_gio": "2026-08-29T00:08:00.987Z",
+    "hanh_dong": "Táº¡o pháº£n Ă¡nh má»›i",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 10,
+    "tham_chieu": "mất điện"
+  },
+  {
+    "nhat_ky_id": 32,
+    "ngay_gio": "2026-09-01T16:12:45.787Z",
+    "hanh_dong": "Táº¡o pháº£n Ă¡nh má»›i",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 11,
+    "tham_chieu": "tai nạn giao thông"
+  },
+  {
+    "nhat_ky_id": 33,
+    "ngay_gio": "2026-09-01T16:14:22.093Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 10,
+    "tham_chieu": "mất điện"
+  },
+  {
+    "nhat_ky_id": 34,
+    "ngay_gio": "2026-09-01T16:14:37.897Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 10,
+    "tham_chieu": "mất điện"
+  },
+  {
+    "nhat_ky_id": 35,
+    "ngay_gio": "2026-09-01T16:14:46.170Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 11,
+    "tham_chieu": "tai nạn giao thông"
+  },
+  {
+    "nhat_ky_id": 36,
+    "ngay_gio": "2026-09-01T16:15:01.237Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 11,
+    "tham_chieu": "tai nạn giao thông"
+  },
+  {
+    "nhat_ky_id": 37,
+    "ngay_gio": "2026-09-01T16:16:19.263Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 11,
+    "tham_chieu": "tai nạn giao thông"
+  },
+  {
+    "nhat_ky_id": 38,
+    "ngay_gio": "2026-09-01T16:17:07.733Z",
+    "hanh_dong": "Cáº­p nháº­t pháº£n Ă¡nh",
+    "nguoi_thuc_hien": "Há»‡ thá»‘ng",
+    "phan_anh_id": 7,
+    "tham_chieu": "njvab"
+  }
+]

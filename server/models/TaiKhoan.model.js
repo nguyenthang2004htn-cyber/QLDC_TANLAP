@@ -1,5 +1,4 @@
-import db from '../config/database.js';
-import sql from 'mssql/msnodesqlv8.js';
+import supabase from '../config/database.js';
 
 const TaiKhoan = {
   /**
@@ -7,16 +6,14 @@ const TaiKhoan = {
    */
   async findByCredentials(username, password) {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request()
-        .input('username', sql.VarChar, username)
-        .input('password', sql.VarChar, password)
-        .query(`
-          SELECT tai_khoan_id AS id, tai_khoan_id, ten_dang_nhap, dien_thoai, ho_ten, vai_tro, cho_thuong_tru, que_quan, nam_sinh, managed_area
-          FROM TaiKhoan 
-          WHERE (ten_dang_nhap = @username OR dien_thoai = @username) AND mat_khau = @password
-        `);
-      return result.recordset[0];
+      const { data, error } = await supabase
+        .from('TaiKhoan')
+        .select('id:tai_khoan_id, tai_khoan_id, ten_dang_nhap, dien_thoai, ho_ten, vai_tro, cho_thuong_tru, que_quan, nam_sinh, managed_area')
+        .eq('mat_khau', password)
+        .or(`ten_dang_nhap.eq.${username},dien_thoai.eq.${username}`);
+      
+      if (error) throw error;
+      return data[0];
     } catch (err) {
       throw err;
     }
@@ -27,15 +24,14 @@ const TaiKhoan = {
    */
   async findById(id) {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request()
-        .input('id', sql.Int, id)
-        .query(`
-          SELECT tai_khoan_id AS id, tai_khoan_id, ten_dang_nhap, ho_ten, vai_tro, cho_thuong_tru, que_quan, nam_sinh, managed_area 
-          FROM TaiKhoan 
-          WHERE tai_khoan_id = @id
-        `);
-      return result.recordset[0];
+      const { data, error } = await supabase
+        .from('TaiKhoan')
+        .select('id:tai_khoan_id, tai_khoan_id, ten_dang_nhap, ho_ten, vai_tro, cho_thuong_tru, que_quan, nam_sinh, managed_area')
+        .eq('tai_khoan_id', id)
+        .single();
+      
+      if (error && error.code !== 'PGRST116') throw error; // PGRST116 is not found
+      return data;
     } catch (err) {
       throw err;
     }
@@ -46,24 +42,16 @@ const TaiKhoan = {
    */
   async updateById(id, { ho_ten, mat_khau, cho_thuong_tru, que_quan, nam_sinh }) {
     try {
-      const pool = await db.getPool();
-      const request = pool.request()
-        .input('ho_ten', sql.NVarChar, ho_ten)
-        .input('cho_thuong_tru', sql.NVarChar, cho_thuong_tru)
-        .input('que_quan', sql.NVarChar, que_quan)
-        .input('nam_sinh', sql.Int, nam_sinh)
-        .input('id', sql.Int, id);
+      const updates = { ho_ten, cho_thuong_tru, que_quan, nam_sinh };
+      if (mat_khau) updates.mat_khau = mat_khau;
 
-      let pQuery = `UPDATE TaiKhoan SET ho_ten = @ho_ten, cho_thuong_tru = @cho_thuong_tru, que_quan = @que_quan, nam_sinh = @nam_sinh`;
+      const { data, error } = await supabase
+        .from('TaiKhoan')
+        .update(updates)
+        .eq('tai_khoan_id', id);
 
-      if (mat_khau) {
-        request.input('mat_khau', sql.VarChar, mat_khau);
-        pQuery += `, mat_khau = @mat_khau`;
-      }
-      pQuery += ` WHERE tai_khoan_id = @id`;
-
-      const result = await request.query(pQuery);
-      return { success: true, changes: result.rowsAffected[0] };
+      if (error) throw error;
+      return { success: true, changes: 1 };
     } catch (err) {
       throw err;
     }
@@ -74,20 +62,21 @@ const TaiKhoan = {
    */
   async create({ ten_dang_nhap, mat_khau, ho_ten, cho_thuong_tru, que_quan, nam_sinh }) {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request()
-        .input('ten_dang_nhap', sql.VarChar, ten_dang_nhap)
-        .input('mat_khau', sql.VarChar, mat_khau)
-        .input('ho_ten', sql.NVarChar, ho_ten)
-        .input('cho_thuong_tru', sql.NVarChar, cho_thuong_tru)
-        .input('que_quan', sql.NVarChar, que_quan)
-        .input('nam_sinh', sql.Int, nam_sinh)
-        .query(`
-          INSERT INTO TaiKhoan (ten_dang_nhap, mat_khau, ho_ten, vai_tro, cho_thuong_tru, que_quan, nam_sinh)
-          OUTPUT INSERTED.tai_khoan_id AS id, INSERTED.tai_khoan_id
-          VALUES (@ten_dang_nhap, @mat_khau, @ho_ten, 'citizen', @cho_thuong_tru, @que_quan, @nam_sinh)
-        `);
-      return { id: result.recordset[0].id, tai_khoan_id: result.recordset[0].tai_khoan_id };
+      const { data, error } = await supabase
+        .from('TaiKhoan')
+        .insert([{
+          ten_dang_nhap,
+          mat_khau,
+          ho_ten,
+          cho_thuong_tru,
+          que_quan,
+          nam_sinh,
+          vai_tro: 'citizen'
+        }])
+        .select();
+
+      if (error) throw error;
+      return { id: data[0].tai_khoan_id, tai_khoan_id: data[0].tai_khoan_id };
     } catch (err) {
       throw err;
     }
@@ -98,11 +87,14 @@ const TaiKhoan = {
    */
   async findByUsername(username) {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request()
-        .input('username', sql.VarChar, username)
-        .query(`SELECT tai_khoan_id AS id, tai_khoan_id, ten_dang_nhap, ho_ten, vai_tro FROM TaiKhoan WHERE ten_dang_nhap = @username`);
-      return result.recordset[0];
+      const { data, error } = await supabase
+        .from('TaiKhoan')
+        .select('id:tai_khoan_id, tai_khoan_id, ten_dang_nhap, ho_ten, vai_tro')
+        .eq('ten_dang_nhap', username)
+        .single();
+        
+      if (error && error.code !== 'PGRST116') throw error;
+      return data;
     } catch (err) {
       throw err;
     }
@@ -113,12 +105,13 @@ const TaiKhoan = {
    */
   async updatePassword(username, newPassword) {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request()
-        .input('newPassword', sql.VarChar, newPassword)
-        .input('username', sql.VarChar, username)
-        .query(`UPDATE TaiKhoan SET mat_khau = @newPassword WHERE ten_dang_nhap = @username`);
-      return { success: true, changes: result.rowsAffected[0] };
+      const { data, error } = await supabase
+        .from('TaiKhoan')
+        .update({ mat_khau: newPassword })
+        .eq('ten_dang_nhap', username);
+
+      if (error) throw error;
+      return { success: true, changes: 1 };
     } catch (err) {
       throw err;
     }
@@ -129,12 +122,12 @@ const TaiKhoan = {
    */
   async findAll() {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request().query(`
-        SELECT tai_khoan_id AS id, tai_khoan_id, ten_dang_nhap, ho_ten, vai_tro, cho_thuong_tru, que_quan, nam_sinh, managed_area 
-        FROM TaiKhoan
-      `);
-      return result.recordset;
+      const { data, error } = await supabase
+        .from('TaiKhoan')
+        .select('id:tai_khoan_id, tai_khoan_id, ten_dang_nhap, ho_ten, vai_tro, cho_thuong_tru, que_quan, nam_sinh, managed_area');
+      
+      if (error) throw error;
+      return data;
     } catch (err) {
       throw err;
     }
@@ -145,13 +138,13 @@ const TaiKhoan = {
    */
   async updateRole(id, vai_tro, managed_area) {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request()
-        .input('vai_tro', sql.VarChar, vai_tro)
-        .input('managed_area', sql.NVarChar, managed_area)
-        .input('id', sql.Int, id)
-        .query(`UPDATE TaiKhoan SET vai_tro = @vai_tro, managed_area = @managed_area WHERE tai_khoan_id = @id`);
-      return { success: true, changes: result.rowsAffected[0] };
+      const { data, error } = await supabase
+        .from('TaiKhoan')
+        .update({ vai_tro, managed_area })
+        .eq('tai_khoan_id', id);
+
+      if (error) throw error;
+      return { success: true, changes: 1 };
     } catch (err) {
       throw err;
     }
@@ -162,11 +155,13 @@ const TaiKhoan = {
    */
   async deleteById(id) {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request()
-        .input('id', sql.Int, id)
-        .query(`DELETE FROM TaiKhoan WHERE tai_khoan_id = @id`);
-      return { success: true, changes: result.rowsAffected[0] };
+      const { error } = await supabase
+        .from('TaiKhoan')
+        .delete()
+        .eq('tai_khoan_id', id);
+
+      if (error) throw error;
+      return { success: true, changes: 1 };
     } catch (err) {
       throw err;
     }
@@ -177,22 +172,22 @@ const TaiKhoan = {
    */
   async createWithRole({ ten_dang_nhap, mat_khau, ho_ten, vai_tro, managed_area, cho_thuong_tru, que_quan, nam_sinh }) {
     try {
-      const pool = await db.getPool();
-      const result = await pool.request()
-        .input('ten_dang_nhap', sql.VarChar, ten_dang_nhap)
-        .input('mat_khau', sql.VarChar, mat_khau)
-        .input('ho_ten', sql.NVarChar, ho_ten)
-        .input('vai_tro', sql.VarChar, vai_tro || 'citizen')
-        .input('managed_area', sql.NVarChar, managed_area || null)
-        .input('cho_thuong_tru', sql.NVarChar, cho_thuong_tru || '')
-        .input('que_quan', sql.NVarChar, que_quan || '')
-        .input('nam_sinh', sql.Int, nam_sinh || null)
-        .query(`
-          INSERT INTO TaiKhoan (ten_dang_nhap, mat_khau, ho_ten, vai_tro, managed_area, cho_thuong_tru, que_quan, nam_sinh)
-          OUTPUT INSERTED.tai_khoan_id AS id, INSERTED.ten_dang_nhap, INSERTED.ho_ten, INSERTED.vai_tro
-          VALUES (@ten_dang_nhap, @mat_khau, @ho_ten, @vai_tro, @managed_area, @cho_thuong_tru, @que_quan, @nam_sinh)
-        `);
-      return result.recordset[0];
+      const { data, error } = await supabase
+        .from('TaiKhoan')
+        .insert([{
+          ten_dang_nhap,
+          mat_khau,
+          ho_ten,
+          vai_tro: vai_tro || 'citizen',
+          managed_area: managed_area || null,
+          cho_thuong_tru: cho_thuong_tru || '',
+          que_quan: que_quan || '',
+          nam_sinh: nam_sinh || null
+        }])
+        .select('id:tai_khoan_id, ten_dang_nhap, ho_ten, vai_tro');
+
+      if (error) throw error;
+      return data[0];
     } catch (err) {
       throw err;
     }

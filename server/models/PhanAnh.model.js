@@ -1,5 +1,4 @@
-import db from '../config/database.js';
-import sql from 'mssql/msnodesqlv8.js';
+import supabase from '../config/database.js';
 
 const PhanAnh = {
   /**
@@ -7,21 +6,30 @@ const PhanAnh = {
    */
   async findAll(area, citizenId) {
     try {
-      const pool = await db.getPool();
-      let queryStr = `SELECT p.*, p.phan_anh_id AS id, n.ho_ten AS citizen FROM PhanAnh p
-                      LEFT JOIN TaiKhoan n ON p.nguoi_dan_id = n.tai_khoan_id`;
-      const request = pool.request();
+      let query = supabase
+        .from('PhanAnh')
+        .select(`
+          *,
+          id:phan_anh_id,
+          TaiKhoan (
+            ho_ten
+          )
+        `);
 
       if (citizenId) {
-        queryStr += ' WHERE p.nguoi_dan_id = @citizenId';
-        request.input('citizenId', sql.Int, citizenId);
+        query = query.eq('nguoi_dan_id', citizenId);
       } else if (area) {
-        queryStr += ' WHERE p.khu_pho LIKE @area OR p.dia_chi LIKE @area';
-        request.input('area', sql.NVarChar, `%${area}%`);
+        query = query.or(`khu_pho.ilike.%${area}%,dia_chi.ilike.%${area}%`);
       }
 
-      const result = await request.query(queryStr);
-      return result.recordset;
+      const { data, error } = await query;
+      if (error) throw error;
+
+      // Transform to match old return signature
+      return data.map(item => ({
+        ...item,
+        citizen: item.TaiKhoan?.ho_ten || null
+      }));
     } catch (err) {
       throw err;
     }
@@ -32,45 +40,37 @@ const PhanAnh = {
    */
   async create({ tieu_de, noi_dung, loai, dia_chi, nguoi_dan_id, khu_pho, so_dien_thoai, chuyen_muc, linh_vuc, hinh_thuc, nguon, han_xu_ly, cong_khai, don_vi_xu_ly, hinh_anh }) {
     try {
-      const pool = await db.getPool();
-      let queryStr = `
-        INSERT INTO PhanAnh (
-          tieu_de, noi_dung, loai, dia_chi, ngay_gui, trang_thai, 
-          nguoi_dan_id, khu_pho, so_dien_thoai, chuyen_muc, linh_vuc, 
-          hinh_thuc, nguon, han_xu_ly, cong_khai, don_vi_xu_ly, hinh_anh
-        )
-        VALUES (
-          @tieu_de, @noi_dung, @loai, @dia_chi, GETDATE(), 'pending', 
-          @nguoi_dan_id, @khu_pho, @so_dien_thoai, @chuyen_muc, @linh_vuc, 
-          @hinh_thuc, @nguon, @han_xu_ly, @cong_khai, @don_vi_xu_ly, @hinh_anh
-        );
-        SELECT SCOPE_IDENTITY() AS phan_anh_id;`;
-        
-      const result = await pool.request()
-        .input('tieu_de', sql.NVarChar, tieu_de)
-        .input('noi_dung', sql.NVarChar, noi_dung)
-        .input('loai', sql.NVarChar, loai)
-        .input('dia_chi', sql.NVarChar, dia_chi || '')
-        .input('nguoi_dan_id', sql.Int, nguoi_dan_id)
-        .input('khu_pho', sql.NVarChar, khu_pho || '')
-        .input('so_dien_thoai', sql.VarChar, so_dien_thoai || '')
-        .input('chuyen_muc', sql.NVarChar, chuyen_muc || '')
-        .input('linh_vuc', sql.NVarChar, linh_vuc || '')
-        .input('hinh_thuc', sql.NVarChar, hinh_thuc || '')
-        .input('nguon', sql.NVarChar, nguon || 'App người dân')
-        .input('han_xu_ly', sql.DateTime, han_xu_ly || null)
-        .input('cong_khai', sql.Bit, cong_khai || 0)
-        .input('don_vi_xu_ly', sql.NVarChar, don_vi_xu_ly || 'UBND Phường')
-        .input('hinh_anh', sql.NVarChar, hinh_anh || null)
-        .query(queryStr);
-
-      const newId = result.recordset[0].phan_anh_id;
-      return {
-        id: newId,
-        phan_anh_id: newId,
-        tieu_de, noi_dung, loai, dia_chi, khu_pho, nguoi_dan_id,
-        so_dien_thoai, chuyen_muc, linh_vuc, hinh_thuc, nguon, han_xu_ly, cong_khai, don_vi_xu_ly, hinh_anh,
+      const newReport = {
+        tieu_de,
+        noi_dung,
+        loai,
+        dia_chi: dia_chi || '',
+        nguoi_dan_id,
+        khu_pho: khu_pho || '',
+        so_dien_thoai: so_dien_thoai || '',
+        chuyen_muc: chuyen_muc || '',
+        linh_vuc: linh_vuc || '',
+        hinh_thuc: hinh_thuc || '',
+        nguon: nguon || 'App người dân',
+        han_xu_ly: han_xu_ly || null,
+        cong_khai: cong_khai || 0,
+        don_vi_xu_ly: don_vi_xu_ly || 'UBND Phường',
+        hinh_anh: hinh_anh || null,
         trang_thai: 'pending',
+        ngay_gui: new Date().toISOString()
+      };
+
+      const { data, error } = await supabase
+        .from('PhanAnh')
+        .insert([newReport])
+        .select();
+
+      if (error) throw error;
+
+      const newId = data[0].phan_anh_id;
+      return {
+        ...data[0],
+        id: newId
       };
     } catch (err) {
       throw err;
@@ -82,22 +82,19 @@ const PhanAnh = {
    */
   async updateStatus(id, trang_thai, ket_qua_xu_ly) {
     try {
-      const pool = await db.getPool();
-      const request = pool.request()
-        .input('trang_thai', sql.VarChar, trang_thai)
-        .input('id', sql.Int, id);
-        
-      let queryStr = `UPDATE PhanAnh SET trang_thai = @trang_thai`;
-
+      const updates = { trang_thai };
       if (ket_qua_xu_ly !== undefined && ket_qua_xu_ly !== null) {
-        queryStr += `, ket_qua_xu_ly = @ket_qua_xu_ly`;
-        request.input('ket_qua_xu_ly', sql.NVarChar, ket_qua_xu_ly);
+        updates.ket_qua_xu_ly = ket_qua_xu_ly;
       }
 
-      queryStr += ` WHERE phan_anh_id = @id`;
+      const { data, error } = await supabase
+        .from('PhanAnh')
+        .update(updates)
+        .eq('phan_anh_id', id)
+        .select();
 
-      const result = await request.query(queryStr);
-      return { success: true, changes: result.rowsAffected[0], id, phan_anh_id: id, trang_thai, ket_qua_xu_ly };
+      if (error) throw error;
+      return { success: true, changes: 1, id, phan_anh_id: id, trang_thai, ket_qua_xu_ly };
     } catch (err) {
       throw err;
     }
